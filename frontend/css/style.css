@@ -1,0 +1,98 @@
+:root {
+  --red-ca: #a30f0f;
+  --dark-red: #7a0d0d;
+  --gold-ca: #d4af37;
+  --gray-bg: #f4f4f2;
+  --gray-line: #dcdcd8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--gray-bg);
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  color: #232323;
+  margin: 0;
+  padding-bottom: 60px;
+}
+
+.header-ca {
+  background: linear-gradient(135deg, var(--red-ca) 0%, var(--dark-red) 100%);
+  color: #fff;
+  padding: 18px 16px;
+  text-align: center;
+  border-bottom: 4px solid var(--gold-ca);
+}
+.header-ca h1 { font-size: 1.3rem; font-weight: 700; margin: 4px 0; }
+.header-ca p { margin: 2px 0; font-size: 0.88rem; color: #f4e2b8; }
+
+.container-app { max-width: 1180px; margin: 0 auto; padding: 18px 14px; }
+
+.card-section {
+  background: #fff;
+  border: 1px solid var(--gray-line);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.card-section h2 {
+  color: var(--red-ca);
+  font-size: 1.05rem;
+  border-left: 5px solid var(--gold-ca);
+  padding-left: 10px;
+  margin-top: 0;
+}
+
+label { font-weight: 600; font-size: 0.9rem; display: block; margin: 10px 0 4px; }
+input, select, textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid #c9c9c9; border-radius: 6px;
+  font-size: 0.92rem; background: #fff;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold-ca); border-color: var(--gold-ca); }
+
+.btn { display: inline-block; padding: 9px 18px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 0.92rem; }
+.btn-primary { background: var(--red-ca); color: #fff; }
+.btn-primary:hover { background: var(--dark-red); }
+.btn-gold { background: var(--gold-ca); color: #4a3600; }
+.btn-secondary { background: #e2e2e2; color: #333; }
+.btn-danger { background: #b91c1c; color: #fff; }
+.btn-sm { padding: 5px 10px; font-size: 0.82rem; }
+.btn-block { width: 100%; }
+
+.table-wrap { overflow-x: auto; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 700px; }
+table.data-table th, table.data-table td { border: 1px solid var(--gray-line); padding: 6px 8px; text-align: center; }
+table.data-table thead th { background: var(--red-ca); color: #fff; }
+table.data-table tbody tr:nth-child(even) { background: #fafafa; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin-bottom: 14px; }
+.stat-box { background: #fff; border-left: 5px solid var(--red-ca); border-radius: 8px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.stat-box.gold { border-left-color: var(--gold-ca); }
+.stat-box .lbl { font-size: 0.78rem; color: #666; font-weight: 700; text-transform: uppercase; }
+.stat-box .val { font-size: 1.6rem; font-weight: 900; color: var(--dark-red); }
+
+.error-row, .detail-row { background: #fdf6e3; border: 1px solid var(--gold-ca); border-radius: 8px; padding: 12px; margin-bottom: 10px; position: relative; }
+.remove-row-btn { position: absolute; top: 8px; right: 10px; background: none; border: none; color: #b91c1c; font-size: 1.1rem; cursor: pointer; }
+
+.badge-status { padding: 3px 8px; border-radius: 12px; font-size: 0.78rem; font-weight: 700; }
+.badge-submitted { background: #e0f5e0; color: #1a7a1a; }
+.badge-updated { background: #fff2cf; color: #8a6100; }
+.badge-overdue { background: #fde0e0; color: #a30f0f; }
+.badge-draft { background: #eee; color: #666; }
+
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tabs button { border: 1px solid var(--red-ca); background: #fff; color: var(--red-ca); border-radius: 20px; padding: 6px 16px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+.tabs button.active { background: var(--red-ca); color: #fff; }
+
+.msg-box { padding: 10px 14px; border-radius: 8px; margin: 12px 0; font-size: 0.9rem; }
+.msg-success { background: #e0f5e0; color: #1a7a1a; border: 1px solid #b7e0b7; }
+.msg-error { background: #fde0e0; color: #a30f0f; border: 1px solid #f0b7b7; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.subtable th, .subtable td { font-size: 0.78rem; padding: 4px 6px; }
+.hidden { display: none !important; }
+.loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none; align-items: center; justify-content: center; color: #fff; z-index: 999; font-weight: 700; }
+.loading-overlay.show { display: flex; }

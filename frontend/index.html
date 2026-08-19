@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<title>HTBC-X03 | Cục Công tác chính trị - Bộ Công an</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#a30f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HTBC-X03">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay"><div>Đang xử lý...</div></div>
+
+<div class="header-ca">
+  <h1 style="font-size:1.15rem;letter-spacing:1px;">BỘ CÔNG AN</h1>
+  <h1 style="font-size:1.0rem;">CỤC CÔNG TÁC CHÍNH TRỊ</h1>
+  <p style="margin-top:10px;font-weight:700;font-size:0.85rem;line-height:1.5;">
+    CHƯƠNG TRÌNH HÀNH ĐỘNG SỐ 10/CTR-BCA-X03, NGÀY 12/5/2026 CỦA BỘ CÔNG AN<br>
+    VỀ "TĂNG CƯỜNG SIẾT CHẶT KỶ LUẬT, KỶ CƯƠNG, NÂNG CAO Ý THỨC CHẤP HÀNH ĐIỀU LỆNH CÔNG AN NHÂN DÂN"
+  </p>
+  <p style="margin-top:8px;font-weight:700;">HỆ THỐNG BÁO CÁO KẾT QUẢ THỰC HIỆN HÀNG TUẦN (HTBC-X03)</p>
+</div>
+
+<div class="container-app">
+
+  <!-- CHỌN ĐƠN VỊ -->
+  <div class="card-section" id="unitSelectBox">
+    <h2>Chọn đơn vị</h2>
+    <label>Tìm nhanh</label>
+    <input type="text" id="unitSearch" placeholder="Gõ để lọc tên/mã đơn vị...">
+    <label>Danh sách đơn vị</label>
+    <select id="unitSelect" size="10" style="height:220px;"></select>
+    <button class="btn btn-primary btn-block" style="margin-top:14px" id="confirmUnitBtn">TIẾP TỤC</button>
+    <div id="unitSelectMsg"></div>
+  </div>
+
+  <!-- FORM BÁO CÁO -->
+  <div id="appBox" class="hidden">
+    <div class="card-section" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div><strong id="unitNameLabel"></strong><br><span id="weekLabel" style="color:#777;font-size:0.85rem"></span></div>
+      <button class="btn btn-secondary btn-sm" id="changeUnitBtn">Đổi đơn vị</button>
+    </div>
+
+    <div class="card-section">
+      <h2>Thông tin báo cáo</h2>
+      <div class="grid-2">
+        <div><label>Từ ngày (Thứ 5)</label><input type="text" id="repFrom" disabled></div>
+        <div><label>Đến ngày (Thứ 5 tuần sau)</label><input type="text" id="repTo" disabled></div>
+      </div>
+      <div class="grid-2">
+        <div><label>Người báo cáo</label><input type="text" id="reporterName" style="text-transform:uppercase"></div>
+        <div><label>Số điện thoại</label><input type="text" id="reporterPhone" placeholder="0912.345.678"></div>
+      </div>
+      <div id="existingStatusBox"></div>
+    </div>
+
+    <!-- PHẦN I -->
+    <div class="card-section">
+      <h2>PHẦN I. KẾT QUẢ CÔNG TÁC KIỂM TRA ĐIỀU LỆNH, QUÂN SỰ, VÕ THUẬT</h2>
+
+      <label>Tên kế hoạch kiểm tra</label>
+      <input type="text" id="planName" placeholder='VD: Kế hoạch số 4694/KH-CAT-PX03, ngày 09/6/2026 về kiểm tra điều lệnh CAND quý III/2026'>
+      <div class="grid-2">
+        <div><label>Số, ký hiệu kế hoạch</label><input type="text" id="planNumber"></div>
+        <div><label>Ngày ban hành</label><input type="date" id="planIssueDate"></div>
+      </div>
+      <label>Nội dung kiểm tra</label>
+      <textarea id="planContent" rows="2"></textarea>
+      <label>Thời gian thực hiện</label>
+      <input type="text" id="planPeriod">
+
+      <h3 style="font-size:0.95rem;color:var(--red-ca);margin-top:18px">1. Số lượt kiểm tra</h3>
+      <div class="grid-2">
+        <div><label>Chuyên trách</label><input type="number" id="checksFullTime" min="0" value="0"></div>
+        <div><label>Bán chuyên trách</label><input type="number" id="checksPartTime" min="0" value="0"></div>
+      </div>
+      <p style="font-size:0.85rem">Tổng số lượt kiểm tra: <strong id="checksTotalDisplay">0</strong> (tự động tính)</p>
+
+      <h3 style="font-size:0.95rem;color:var(--red-ca);margin-top:18px">2. Tập thể, cá nhân vi phạm</h3>
+      <div class="grid-2">
+        <div><label>Tập thể (TT)</label><input type="number" id="vTT" min="0" value="0"></div>
+        <div></div>
+      </div>
+      <p style="font-size:0.85rem;font-weight:700">Cá nhân (CN) theo cấp:</p>
+      <div class="table-wrap">
+        <table class="data-table subtable">
+          <thead><tr><th>Cấp Cục</th><th>Cấp phòng</th><th>Cấp đội/cấp xã</th><th>Cán bộ</th></tr></thead>
+          <tbody><tr>
+            <td><input type="number" id="vCapCuc" min="0" value="0"></td>
+            <td><input type="number" id="vCapPhong" min="0" value="0"></td>
+            <td><input type="number" id="vCapDoiXa" min="0" value="0"></td>
+            <td><input type="number" id="vCanBo" min="0" value="0"></td>
+          </tr></tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:0.95rem;color:var(--red-ca);margin-top:18px">3. Lỗi vi phạm</h3>
+      <div id="errorList"></div>
+      <button type="button" class="btn btn-gold btn-sm" id="addErrorBtn">+ THÊM LỖI VI PHẠM</button>
+
+      <h3 style="font-size:0.95rem;color:var(--red-ca);margin-top:18px">4. Hình thức vi phạm</h3>
+      <div class="table-wrap">
+        <table class="data-table subtable">
+          <thead><tr><th></th><th>TT</th><th>CN</th></tr></thead>
+          <tbody id="penaltyTableBody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px">
+        <label>Hình thức kỷ luật (số lượng)</label>
+        <input type="number" id="penKyLuat" min="0" value="0" style="max-width:160px">
+      </div>
+
+      <h3 style="font-size:0.95rem;color:var(--red-ca);margin-top:18px">5. Chi tiết người/tập thể vi phạm <span style="font-weight:400;color:#777">(tùy chọn — bỏ trống nếu không có vi phạm)</span></h3>
+      <div id="detailList"></div>
+      <button type="button" class="btn btn-gold btn-sm" id="addDetailBtn">+ THÊM CHI TIẾT VI PHẠM</button>
+    </div>
+
+    <!-- PHẦN II -->
+    <div class="card-section">
+      <h2>PHẦN II. KẾT QUẢ CÔNG TÁC NÊU GƯƠNG CỦA LÃNH ĐẠO, CHỈ HUY</h2>
+      <div class="grid-2">
+        <div><label>1. Số lượt vi phạm Điều lệnh CAND của lãnh đạo, chỉ huy</label><input type="number" id="p2LeaderViolation" min="0" value="0"></div>
+        <div><label>2. Số lượt kiểm tra việc chấp hành Điều lệnh CAND của lãnh đạo, chỉ huy</label><input type="number" id="p2LeaderCheck" min="0" value="0"></div>
+      </div>
+      <div class="grid-2">
+        <div><label>3. Số cuộc giao ban được tổ chức</label><input type="number" id="p2Meeting" min="0" value="0"></div>
+        <div><label>4. Số văn bản về công tác siết chặt kỷ luật, kỷ cương, Điều lệnh, quân sự, võ thuật</label><input type="number" id="p2Document" min="0" value="0"></div>
+      </div>
+      <label>Ghi chú</label>
+      <textarea id="p2Note" rows="2"></textarea>
+    </div>
+
+    <div class="card-section" style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" id="saveDraftBtn">LƯU NHÁP</button>
+      <button class="btn btn-primary" id="submitBtn">GỬI BÁO CÁO</button>
+    </div>
+
+    <div id="submitResultBox"></div>
+  </div>
+
+  <p style="text-align:center;margin-top:20px;">
+    <a href="admin.html" style="color:#999;font-size:0.8rem;">Quản trị hệ thống →</a>
+  </p>
+  <p style="text-align:center;margin-top:6px;color:#aaa;font-size:0.75rem;letter-spacing:0.3px;">
+    Thượng tá Phạm Anh Dưỡng — Chuyên viên cao cấp, Phòng 6/X03
+  </p>
+</div>
+
+<script src="js/env.js"></script>
+<script type="module" src="js/report-form.js"></script>
+</body>
+</html>

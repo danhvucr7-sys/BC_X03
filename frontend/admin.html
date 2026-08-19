@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị HTBC-X03 | Cục Công tác chính trị - Bộ Công an</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="assets/icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay"><div>Đang xử lý...</div></div>
+
+<div class="header-ca">
+  <h1 style="font-size:1.15rem;letter-spacing:1px;">BỘ CÔNG AN</h1>
+  <h1 style="font-size:1.0rem;">CỤC CÔNG TÁC CHÍNH TRỊ</h1>
+  <p style="margin-top:8px;font-weight:700">QUẢN TRỊ HỆ THỐNG HTBC-X03</p>
+</div>
+
+<div class="container-app">
+
+  <!-- APP -->
+  <div id="appBox">
+    <div class="card-section" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <strong>Admin X03</strong>
+      <a href="index.html" style="color:#999;font-size:0.85rem;">← Về trang gửi báo cáo</a>
+    </div>
+
+    <div class="tabs" id="mainTabs">
+      <button data-tab="dashboard" class="active">Dashboard</button>
+      <button data-tab="tracking">Đơn vị đã/chưa nộp</button>
+      <button data-tab="reports">Báo cáo tuần</button>
+      <button data-tab="units">Quản lý đơn vị</button>
+      <button data-tab="provinces">Quản lý tỉnh/thành</button>
+      <button data-tab="settings">Cấu hình & mật khẩu</button>
+      <button data-tab="audit">Audit log</button>
+    </div>
+
+    <!-- TAB: DASHBOARD -->
+    <div class="tab-panel" id="tab-dashboard">
+      <div class="card-section">
+        <h2>Bộ lọc & tổng hợp theo kỳ</h2>
+        <div class="grid-2">
+          <div><label>Từ ngày</label><input type="date" id="filterFrom"></div>
+          <div><label>Đến ngày</label><input type="date" id="filterTo"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <button class="btn btn-sm btn-gold" data-quick="period">Kỳ hiện tại (T5→T5)</button>
+          <button class="btn btn-sm btn-gold" data-quick="month">Tháng này</button>
+          <button class="btn btn-sm btn-gold" data-quick="quarter">Quý này</button>
+          <button class="btn btn-sm btn-gold" data-quick="half">6 tháng</button>
+          <button class="btn btn-sm btn-gold" data-quick="year">Năm nay</button>
+          <button class="btn btn-sm btn-primary" id="applyFilterBtn">LỌC / TỔNG HỢP</button>
+        </div>
+      </div>
+
+      <div class="card-section">
+        <h2>Thống kê chung</h2>
+        <div class="stat-grid" id="statGrid"></div>
+      </div>
+
+      <div class="card-section">
+        <h2>I. Kết quả công tác kiểm tra (tổng hợp toàn quốc)</h2>
+        <div class="table-wrap"><table class="data-table" id="summaryPart1Table"></table></div>
+      </div>
+
+      <div class="card-section">
+        <h2>II. Công tác nêu gương (tổng hợp toàn quốc)</h2>
+        <div class="table-wrap"><table class="data-table" id="summaryPart2Table"></table></div>
+      </div>
+
+      <div class="card-section">
+        <button class="btn btn-primary" id="exportExcelBtn">XUẤT EXCEL</button>
+      </div>
+    </div>
+
+    <!-- TAB: TRACKING -->
+    <div class="tab-panel hidden" id="tab-tracking">
+      <div class="card-section">
+        <h2>Theo dõi đơn vị đã nộp / chưa nộp</h2>
+        <div class="grid-2">
+          <div><label>Tuần (ISO)</label><input type="number" id="trackWeek" min="1" max="53"></div>
+          <div><label>Năm</label><input type="number" id="trackYear"></div>
+        </div>
+        <button class="btn btn-sm btn-primary" id="trackLoadBtn" style="margin-top:8px">Tải danh sách</button>
+        <div class="stat-grid" style="margin-top:14px" id="trackStatGrid"></div>
+      </div>
+      <div class="card-section">
+        <h2>🔴 Đơn vị chưa nộp</h2>
+        <div class="table-wrap"><table class="data-table" id="missingTable"></table></div>
+      </div>
+      <div class="card-section">
+        <h2>🟢 Đơn vị đã nộp</h2>
+        <div class="table-wrap"><table class="data-table" id="submittedTable"></table></div>
+      </div>
+    </div>
+
+    <!-- TAB: REPORTS -->
+    <div class="tab-panel hidden" id="tab-reports">
+      <div class="card-section">
+        <h2>Tra cứu / xóa báo cáo</h2>
+        <div class="grid-2">
+          <div><label>Tuần</label><input type="number" id="repSearchWeek" min="1" max="53"></div>
+          <div><label>Năm</label><input type="number" id="repSearchYear"></div>
+        </div>
+        <button class="btn btn-sm btn-primary" id="repSearchBtn" style="margin-top:8px">Tìm kiếm</button>
+        <div class="table-wrap" style="margin-top:12px"><table class="data-table" id="reportsTable"></table></div>
+      </div>
+    </div>
+
+    <!-- TAB: UNITS -->
+    <div class="tab-panel hidden" id="tab-units">
+      <div class="card-section">
+        <h2>Kiểm tra danh sách đơn vị</h2>
+        <p>Tổng số đơn vị: <strong id="unitsCount">0</strong></p>
+        <div class="grid-2">
+          <div><label>Mã đơn vị mới</label><input type="text" id="newUnitCode"></div>
+          <div><label>Tên đơn vị mới</label><input type="text" id="newUnitName"></div>
+        </div>
+        <button class="btn btn-sm btn-gold" id="addUnitBtn" style="margin-top:8px">+ Thêm đơn vị</button>
+        <div class="table-wrap" style="margin-top:12px"><table class="data-table" id="unitsTable"></table></div>
+      </div>
+    </div>
+
+    <!-- TAB: PROVINCES -->
+    <div class="tab-panel hidden" id="tab-provinces">
+      <div class="card-section">
+        <h2>Quản lý tỉnh/thành phố</h2>
+        <div class="table-wrap"><table class="data-table" id="provincesTable"></table></div>
+      </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div class="tab-panel hidden" id="tab-settings">
+      <div class="card-section">
+        <h2>Cấu hình hệ thống</h2>
+        <label>Tên chương trình</label><input type="text" id="cfgSystemName">
+        <label>Số chương trình</label><input type="text" id="cfgProgramNumber">
+        <label>Ngày chương trình</label><input type="date" id="cfgProgramDate">
+        <label>Tên nội dung chương trình</label><textarea id="cfgProgramTitle" rows="2"></textarea>
+        <div class="grid-2">
+          <div><label>Mã đơn vị chủ quản</label><input type="text" id="cfgOwnerCode"></div>
+          <div><label>Tên đơn vị chủ quản</label><input type="text" id="cfgOwnerName"></div>
+        </div>
+        <label>Trạng thái hệ thống</label>
+        <select id="cfgStatus"><option value="active">Hoạt động</option><option value="maintenance">Bảo trì</option><option value="closed">Đóng</option></select>
+        <button class="btn btn-primary" id="saveSettingsBtn" style="margin-top:12px">Lưu cấu hình</button>
+        <div id="settingsMsg"></div>
+      </div>
+
+      <div class="card-section">
+        <h2>Lưu ý bảo mật</h2>
+        <p style="font-size:0.85rem;color:#777">
+          Phiên bản này KHÔNG yêu cầu mật khẩu Admin — ai có đường link
+          <code>/admin.html</code> đều có toàn quyền quản trị. Nếu cần thêm lớp
+          bảo vệ, hãy giữ kín đường link này hoặc liên hệ để khôi phục cơ chế
+          mật khẩu.
+        </p>
+      </div>
+    </div>
+
+    <!-- TAB: AUDIT -->
+    <div class="tab-panel hidden" id="tab-audit">
+      <div class="card-section">
+        <h2>Nhật ký thao tác (Audit log)</h2>
+        <div class="table-wrap"><table class="data-table" id="auditTable"></table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/env.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
